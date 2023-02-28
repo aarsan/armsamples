@@ -1,0 +1,44 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "secretName": {
+            "type": "string",
+            "defaultValue": "my-secret-name",
+            "metadata": {
+                "description": "Specifies the name of the secret to be created."
+            }
+        },
+        "vaultName": {
+            "type": "string",
+            "defaultValue": "my-vault-name",
+            "metadata": {
+                "description": "Name of the vault you want the secrets deployed to."
+            }
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2022-07-01",
+            "name": "[concat(parameters('vaultName'), '/', parameters('secretName'))]",
+            "tags": {},
+            "properties": {
+                "attributes": {
+                    "enabled": true,
+                    "exp": 500,
+                    "nbf": 500
+                },
+            "contentType": "string",
+            "value": "string"
+    }
+  }
+    ],
+    "outputs": {
+
+    }
+}
+
+
+
+
