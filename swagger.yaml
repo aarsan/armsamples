@@ -1,0 +1,263 @@
+swagger: '2.0'
+info:
+  description: >-
+    Azure Resource Manager enables you to deploy and manage the infrastructure
+    for your Azure solutions. You organize related resources in resource groups,
+    and deploy your resources with JSON templates. For an introduction to
+    deploying and managing resources with Resource Manager, see Azure Resource
+    Manager overview
+  title: Azure Resource Manager
+  version: '1.0'
+host: management.azure.com
+basePath: /
+schemes:
+  - https
+consumes: []
+produces: []
+paths:
+  /subscriptions/{subscription_id}/resourcegroups/{resource_group}/providers/Microsoft.Resources/deployments/{deployment_name}:
+    put:
+      responses:
+        '200':
+          description: default
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: id
+              name:
+                type: string
+                description: name
+              type:
+                type: string
+                description: type
+              properties:
+                type: object
+                properties:
+                  template:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: id
+                      contentVersion:
+                        type: string
+                        description: contentVersion
+                    description: template
+                  parameters:
+                    type: object
+                    properties: {}
+                    description: parameters
+                  mode:
+                    type: string
+                    description: mode
+                  provisioningState:
+                    type: string
+                    description: provisioningState
+                  timestamp:
+                    type: string
+                    description: timestamp
+                  duration:
+                    type: string
+                    description: duration
+                  correlationId:
+                    type: string
+                    description: correlationId
+                  providers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        namespace:
+                          type: string
+                          description: namespace
+                        resourceTypes:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              resourceType:
+                                type: string
+                                description: resourceType
+                              locations:
+                                type: array
+                                items:
+                                  type: string
+                                description: locations
+                          description: resourceTypes
+                    description: providers
+                  dependencies:
+                    type: array
+                    items: {}
+                    description: dependencies
+                  outputResources:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: id
+                    description: outputResources
+                description: properties
+        '201':
+          description: default
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: id
+              name:
+                type: string
+                description: name
+              type:
+                type: string
+                description: type
+              properties:
+                type: object
+                properties:
+                  template:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: id
+                      contentVersion:
+                        type: string
+                        description: contentVersion
+                    description: template
+                  parameters:
+                    type: object
+                    properties: {}
+                    description: parameters
+                  mode:
+                    type: string
+                    description: mode
+                  provisioningState:
+                    type: string
+                    description: provisioningState
+                  timestamp:
+                    type: string
+                    description: timestamp
+                  duration:
+                    type: string
+                    description: duration
+                  correlationId:
+                    type: string
+                    description: correlationId
+                  providers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        namespace:
+                          type: string
+                          description: namespace
+                        resourceTypes:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              resourceType:
+                                type: string
+                                description: resourceType
+                              locations:
+                                type: array
+                                items:
+                                  type: string
+                                description: locations
+                          description: resourceTypes
+                    description: providers
+                  dependencies:
+                    type: array
+                    items: {}
+                    description: dependencies
+                description: properties
+      summary: Deployments - Create or Update
+      operationId: CreateorUpdate
+      parameters:
+        - name: subscription_id
+          in: path
+          required: true
+          default: a0fc4f7c-9c55-4151-b900-07761c35237c
+          type: string
+        - name: resource_group
+          in: path
+          required: true
+          type: string
+        - name: deployment_name
+          in: path
+          required: true
+          type: string
+        - name: api-version
+          type: string
+          in: query
+        - name: body
+          in: body
+          required: false
+          schema:
+            type: object
+            properties:
+              properties:
+                type: object
+                properties:
+                  template:
+                    type: object
+                    default:
+                      $schema: >-
+                        https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#
+                      contentVersion: 1.0.0.0
+                      parameters:
+                        roleDefinitionID:
+                          type: string
+                          defaultValue: 14b46e9e-c2b7-41b4-b07b-48a6ebf60603
+                        principalId:
+                          type: string
+                          defaultValue: 4563c41c-755b-4a5f-ba3d-b56a98bd3257
+                        vaultName:
+                          type: string
+                          defaultValue: akv-pad
+                        secretName:
+                          type: string
+                          defaultValue: coffee
+                      variables:
+                        roleAssignmentName: >-
+                          [guid(parameters('principalId'),
+                          parameters('roleDefinitionID'),resourceGroup().id)]
+                      resources:
+                        - type: Microsoft.Authorization/roleAssignments
+                          apiVersion: '2022-04-01'
+                          name: '[variables('roleAssignmentName')]'
+                          scope: >-
+                            [concat('Microsoft.KeyVault/vaults/',
+                            parameters('vaultName'), '/secrets/',
+                            parameters('secretName'))]
+                          properties:
+                            roleDefinitionId: >-
+                              [resourceId('Microsoft.Authorization/roleDefinitions',
+                              parameters('roleDefinitionID'))]
+                            principalId: '[parameters('principalId')]'
+                    description: template
+                  mode:
+                    type: string
+                    default: Incremental
+                description: properties
+      description: >-
+        Deploys resources to a resource group. Provide the template and
+        parameters directly in the request.
+  /: {}
+definitions: {}
+parameters: {}
+responses: {}
+securityDefinitions:
+  oauth2-auth:
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+    tokenUrl: https://login.windows.net/common/oauth2/authorize
+    scopes: {}
+security:
+  - oauth2-auth: []
+tags: []
