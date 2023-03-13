@@ -243,6 +243,7 @@ paths:
                   mode:
                     type: string
                     default: Incremental
+                    description: Deployment Mode
                 description: properties
       description: >-
         Deploys resources to a resource group. Provide the template and

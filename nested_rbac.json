@@ -1,0 +1,37 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "roleDefinitionID": {
+      "type": "string",
+      "defaultValue": "14b46e9e-c2b7-41b4-b07b-48a6ebf60603"
+    },
+    "principalId": {
+      "type": "string",
+      "defaultValue": "4563c41c-755b-4a5f-ba3d-b56a98bd3257"
+    },
+    "vaultName": {
+      "type": "string",
+      "defaultValue": "akv-pad"
+    },
+    "secretName": {
+      "type": "string",
+      "defaultValue": "kjhg"
+    }
+  },
+  "variables": {
+    "roleAssignmentName": "[guid(parameters('principalId'), parameters('roleDefinitionID'), resourceGroup().id)]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "name": "[variables('roleAssignmentName')]",
+      "scope": "[concat('Microsoft.KeyVault/vaults/', parameters('vaultName'), '/secrets/', parameters('secretName'))]",
+      "properties": {
+        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', parameters('roleDefinitionID'))]",
+        "principalId": "[parameters('principalId')]"
+      }
+    }
+  ]
+}
