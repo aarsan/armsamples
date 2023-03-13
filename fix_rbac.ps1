@@ -1,5 +1,5 @@
 Connect-AzAccount
-Set-AzContext 'db1b885f-fc00-442a-a361-4410b2693924'
+Set-AzContext '{subscription_id}'
 $rg_name = "akv"
 $templateFile = "./rbac.json"
 
